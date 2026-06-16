@@ -97,18 +97,17 @@ Researchers, creators, marketers, and learners.
 ## Step 6. Execution Planning
 
 ### Foundation First
-#### n8n Form
+#### [n8n-Form](docs/images/Input-form.png)
 
-[Input-form](docs/images/Input-form.png)
+![](docs/images/Input-form.png)
 
-#### Apify Actor
+#### [Apify-Actor](https://console.apify.com/actors/BuhSTDI7Mgd6NITMb/info/readme?build=latest)
 
-[Apify-Actor](https://console.apify.com/actors/BuhSTDI7Mgd6NITMb/info/readme?build=latest)
 Search YouTube videos using a keyword and return video URLs, video IDs, and metadata for downstream AI workflows. Designed for n8n integrations, content research, transcript generation, translation pipelines, and YouTube automation projects.
 
-### Google Sheets
+### [Google Sheets](docs/supporting-documents/MyVirtualAssistant_DB.xlsx)
 
-[Sheet DB](docs/images/Sheet-DB.png)
+![](docs/images/Sheet-DB.png)
 
 | Column | Purpose |
 |----------|----------|
@@ -136,7 +135,7 @@ Split Videos
 ↓
 Google Sheets
 
-@[n8n-Workflow](docs/images/Workflow.png)
+![n8n-Workflow](docs/images/Workflow.png)
 
 ### Test & Learn Third
 
