@@ -1,0 +1,624 @@
+{
+  "name": "YouTube Search with Apify",
+  "nodes": [
+    {
+      "parameters": {
+        "fieldToSplitOut": "url",
+        "options": {}
+      },
+      "id": "505b41e7-0aec-480a-b288-4197cd60382b",
+      "name": "Split Videos",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        608
+      ]
+    },
+    {
+      "parameters": {
+        "formTitle": "YouTube Video Search",
+        "formDescription": "Enter keywords to search for YouTube videos",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Search Keywords",
+              "fieldName": "keywords",
+              "placeholder": "Enter search keywords (e.g., \"machine learning tutorial\")",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Search YouTube"
+        }
+      },
+      "id": "1c981eb4-9200-406a-879d-a7c6ed79f5a4",
+      "name": "YouTube Search Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        240,
+        624
+      ],
+      "webhookId": "63297388-46ad-40ea-868b-fe000ec2e754"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/flavorful_fancy~youtube-keyword-search/runs?token=YOUR_APIFY_TOKEN",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"keyword\": \"{{ $json.keywords }}\",\n  \"maxResults\": 5\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        464,
+        624
+      ],
+      "id": "97d1537f-03a4-4e79-9f8d-444acdcc9c5d",
+      "name": "Apify Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9f1e5a62-3174-4832-87c1-d47cab7f9bf4",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "SUCCEEDED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1136,
+        624
+      ],
+      "id": "16f23406-6127-4e78-b31a-6bcf24b99899",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ie1-bTmHX3coS4hXPh8WnK-6Rqf5wVtLRArKOFAjQMg",
+          "mode": "list",
+          "cachedResultName": "MyVirtualAssistant_DB"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 755625300,
+          "mode": "list",
+          "cachedResultName": "AI_Transcripts"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now.toISO() }}",
+            "Source_URL": "={{ $json.url }}",
+            "Platform": "YouTube",
+            "Telegram ID": "=",
+            "Extraction Status": "ToDo"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Source_URL",
+              "displayName": "Source_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Telegram ID",
+              "displayName": "Telegram ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Current Stage",
+              "displayName": "Current Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Extracted Timestamp",
+              "displayName": "Extracted Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Channel Name ",
+              "displayName": "Channel Name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Character Count",
+              "displayName": "Character Count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Extraction Status",
+              "displayName": "Extraction Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AI Scoring",
+              "displayName": "AI Scoring",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "is Motivational?",
+              "displayName": "is Motivational?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "motivation Reason",
+              "displayName": "motivation Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Updated AI Transcript ",
+              "displayName": "Updated AI Transcript ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Transcript Status",
+              "displayName": "Transcript Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title Kannada Translation",
+              "displayName": "Title Kannada Translation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Short Summary in Kannada",
+              "displayName": "Short Summary in Kannada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Translated Kannada Text",
+              "displayName": "Translated Kannada Text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Translation to Kannada Status",
+              "displayName": "Translation to Kannada Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Emotions to Kannada Script",
+              "displayName": "Emotions to Kannada Script",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Generated Audio GDrive URL",
+              "displayName": "Generated Audio GDrive URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Generated Audio Cloudiary URL",
+              "displayName": "Generated Audio Cloudiary URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Audio Duration",
+              "displayName": "Audio Duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Generate Audio Status",
+              "displayName": "Generate Audio Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mix Video + Audio JSON Project ID",
+              "displayName": "Mix Video + Audio JSON Project ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Video + Audio Timestamp",
+              "displayName": "Video + Audio Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Generated Video Status",
+              "displayName": "Generated Video Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Google Drive URL",
+              "displayName": "Google Drive URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Video Approval Request thru Telegram",
+              "displayName": "Video Approval Request thru Telegram",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "YouTube Uploaded",
+              "displayName": "YouTube Uploaded",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "YouTube Uploaded Status",
+              "displayName": "YouTube Uploaded Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "4586c5f1-2a4f-406b-8d2f-0258dde0ffa3",
+      "name": "Save URL",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1792,
+        608
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MUpDixPFHidNhL3O",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.apify.com/v2/actor-runs/{{ $json.data.id }}/?token=YOUR_APIFY_TOKEN",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "82a6a5f1-b4a9-4c16-b546-3a76e0e6a864",
+      "name": "Fetch Apify records ",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        912,
+        624
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "36DdDtvDjhDY8H1x",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.output.results }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "b0c59c5e-7052-4868-93ce-3989dc5ac40f",
+      "name": "Extract Apify fetched records",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1392,
+        608
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "36DdDtvDjhDY8H1x",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 20
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        688,
+        624
+      ],
+      "id": "f073d88e-9d83-4a4f-90bb-832a7b20bc2d",
+      "name": "Wait for 20 secs",
+      "webhookId": "8d8bc7d8-fc2f-4d22-a031-cf2dba1d412f"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Split Videos": {
+      "main": [
+        [
+          {
+            "node": "Save URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Search Form": {
+      "main": [
+        [
+          {
+            "node": "Apify Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify Request": {
+      "main": [
+        [
+          {
+            "node": "Wait for 20 secs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Extract Apify fetched records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Apify records ": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Apify fetched records": {
+      "main": [
+        [
+          {
+            "node": "Split Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for 20 secs": {
+      "main": [
+        [
+          {
+            "node": "Fetch Apify records ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f205bc5c-9150-4366-a071-83e82edbcfd0",
+  "meta": {
+    "instanceId": "9440ab9de3845d4c90e5a85fe3c2736b54968a4597303bfb179ce08f5a295ff0"
+  },
+  "nodeGroups": [],
+  "id": "pd8dgls7qCtDf7Jx",
+  "tags": []
+}
