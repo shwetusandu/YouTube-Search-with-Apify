@@ -1,5 +1,7 @@
 # YouTube Video Search with Apify (n8n Workflow)
 
+![](docs/images/Video_Research_Automation_Workflow.png)
+
 ## Step 1. Defining the Problem Statement
 Content creators, researchers, marketers, and learners struggle with manually searching YouTube and collecting relevant video URLs, which causes wasted time, inconsistent research workflows, and difficulty scaling content discovery.
 
